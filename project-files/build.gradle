@@ -1,0 +1,14 @@
+group 'com.teamtreehouse.blog'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.sparkjava:spark-core:2.3'
+    implementation 'com.sparkjava:spark-template-handlebars:2.3'
+    testImplementation group: 'junit', name: 'junit', version: '4.11'
+}
