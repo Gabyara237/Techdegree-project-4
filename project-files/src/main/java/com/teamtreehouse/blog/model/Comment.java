@@ -5,10 +5,10 @@ import java.util.Date;
 public class Comment {
     private String author;
     private String content;
-    private Date date;
+    private String date;
 
     // ######################## CONSTRUCTOR #######################
-    public Comment(String author, String content, Date date) {
+    public Comment(String author, String content, String date) {
         this.author = author;
         this.content = content;
         this.date = date;
@@ -23,7 +23,7 @@ public class Comment {
         return content;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

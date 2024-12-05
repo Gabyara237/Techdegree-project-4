@@ -8,17 +8,17 @@ public class BlogEntry {
 
     private String title;
     private String content;
-    private Date date;
-    private String author;
+    private String date;
+   // private String author;
     private List<Comment> comments;
     private String slug;
 
 
-    public BlogEntry( String title, String author, String content,Date date) {
+    public BlogEntry( String title, String content, String date) {
         this.date = date;
         this.content = content;
         this.title = title;
-        this.author = author;
+       // this.author = author;
     }
 
     // ######################## GETTERS #######################
@@ -35,10 +35,6 @@ public class BlogEntry {
         return content;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -51,10 +47,6 @@ public class BlogEntry {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public void setComments(List<Comment> comments) {
@@ -81,16 +73,8 @@ public class BlogEntry {
 
     public boolean addComment(Comment comment) {
         // Store these comments!
-        comments.add(comment);
-        return false;
+        return comments.add(comment);
+
     }
 
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 }
