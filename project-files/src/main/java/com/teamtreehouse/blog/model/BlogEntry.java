@@ -1,6 +1,7 @@
 package com.teamtreehouse.blog.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class BlogEntry {
         this.date = date;
         this.content = content;
         this.title = title;
+        this.comments = new ArrayList<>();
        // this.author = author;
         try {
             Slugify slugify = new Slugify();

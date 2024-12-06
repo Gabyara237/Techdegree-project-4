@@ -36,14 +36,15 @@ public class Main {
 
         post("/detail/:slug",(req,res) ->{
 
-            BlogEntry blogEntry = dao.findEntryBySlug(req.queryParams("slug"));
+            String slug = req.params("slug");
+            BlogEntry blogEntry = dao.findEntryBySlug(slug);
             String author = req.queryParams("name");
             String newComment = req.queryParams("comment");
             String dateFormatted = dateFormat.format(new Date());
 
             Comment comment = new Comment(author,newComment,dateFormatted);
-
             blogEntry.addComment(comment);
+            res.redirect("/detail/"+slug);
             return null;
         });
 
@@ -66,9 +67,13 @@ public class Main {
         },new HandlebarsTemplateEngine());
 
         post("/edit/:slug",(req,res)-> {
-            dao.addEntry(createUpdateEntry(req));
+            String slug = req.params("slug");
+            BlogEntry blogEntry = dao.findEntryBySlug(slug);
+            blogEntry.setTitle(req.queryParams("title"));
+            blogEntry.setContent(req.queryParams("entry"));
+            res.redirect("/detail/"+slug);
             return null;
-        },new HandlebarsTemplateEngine());
+        });
 
         get("/password",(req,res) ->{
             Map<String,String> model = new HashMap<>();
