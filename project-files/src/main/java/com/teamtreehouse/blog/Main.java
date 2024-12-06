@@ -17,10 +17,14 @@ public class Main {
 
     public static void main(String[] args) {
         staticFileLocation("/public");
-
-
-
         BlogDao dao = new SimpleBlogDAO();
+
+        before((req,res)->{
+            if(req.cookie("password")!=null){
+                req.attribute("password",req.cookie("password"));
+
+            }
+        });
 
         get("/", (req,res) -> {
             Map<String,List<BlogEntry>> model = new HashMap<>();
@@ -49,6 +53,10 @@ public class Main {
         });
 
         get("/new",(req,res) ->{
+            if(req.attribute("password") == null || !req.attribute("password").equals("admin")){
+                res.redirect("/password?redirect=new");
+                halt();
+            }
             Map<String,String> model = new HashMap<>();
             return new ModelAndView(model,"new.hbs");
         },new HandlebarsTemplateEngine());
@@ -61,6 +69,11 @@ public class Main {
         });
 
         get("/edit/:slug",(req,res) -> {
+            if(req.attribute("password") == null || !req.attribute("password").equals("admin")){
+                String slug = req.params("slug");
+                res.redirect("/password?slug="+ slug);
+                halt();
+            }
             Map<String, BlogEntry> model = new HashMap<>();
             model.put("entry",dao.findEntryBySlug(req.params("slug")));
             return new ModelAndView(model,"edit.hbs");
@@ -77,11 +90,27 @@ public class Main {
 
         get("/password",(req,res) ->{
             Map<String,String> model = new HashMap<>();
+            String slug = req.queryParams("slug");
+            String redirectTo= req.queryParams("redirect");
+            if (slug !=null){
+                model.put("slug",slug);
+            }
+            if (redirectTo !=null){
+                model.put("redirectTo",redirectTo);
+            }
             return new ModelAndView(model,"password.hbs");
         },new HandlebarsTemplateEngine());
 
         post("/password", (req,res) ->{
             String password = req.queryParams("password");
+            String slug = req.queryParams("slug");
+            res.cookie("password",password);
+
+            if(slug != null){
+                res.redirect("/edit/"+slug);
+            }else{
+                res.redirect("/new");
+            }
             return null;
         });
     }
