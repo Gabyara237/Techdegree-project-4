@@ -8,10 +8,7 @@ import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static spark.Spark.*;
 
@@ -26,7 +23,8 @@ public class Main {
         BlogDao dao = new SimpleBlogDAO();
 
         get("/", (req,res) -> {
-            Map<String,String> model = new HashMap<>();
+            Map<String,List<BlogEntry>> model = new HashMap<>();
+            model.put("entries",dao.findAllEntries());
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -55,9 +53,11 @@ public class Main {
         },new HandlebarsTemplateEngine());
 
         post("/new", (req,res) ->{
+            System.out.println("Nueva entrada agregada");
             dao.addEntry(createUpdateEntry(req));
+            res.redirect("/");
             return null;
-        },new HandlebarsTemplateEngine());
+        });
 
         get("/edit/:slug",(req,res) -> {
             Map<String, BlogEntry> model = new HashMap<>();

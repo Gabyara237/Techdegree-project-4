@@ -1,8 +1,10 @@
 package com.teamtreehouse.blog.model;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import com.github.slugify.Slugify;
 
 public class BlogEntry {
 
@@ -19,6 +21,12 @@ public class BlogEntry {
         this.content = content;
         this.title = title;
        // this.author = author;
+        try {
+            Slugify slugify = new Slugify();
+            slug = slugify.slugify(title);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // ######################## GETTERS #######################
@@ -37,6 +45,10 @@ public class BlogEntry {
 
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     // ######################## SETTERS #######################
