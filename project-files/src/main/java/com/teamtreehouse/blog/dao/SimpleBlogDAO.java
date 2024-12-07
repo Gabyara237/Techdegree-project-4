@@ -29,4 +29,9 @@ public class SimpleBlogDAO implements BlogDao {
                 .orElseThrow(NotFoundException::new);
     }
 
+    @Override
+    public boolean deleteEntry(BlogEntry blogEntry){
+        return blogEntries.remove(blogEntry);
+    }
+
 }

@@ -3,12 +3,17 @@
     <section>
         <div class="container">
             <div class="entry-list">
-                <h1>Current entries</h1>
-                <ol>
-                    {{#each entries}}
-                        <li><a href="/detail/{{slug}}">{{title}}</a> {{date}}</li>
-                    {{/each}}
-                </ol>
+                <article>
+
+                        {{#each entries}}
+                            <a href="/detail/{{slug}}"><h2>{{title}}</h2></a><time datetime="2024-10-01 1:00">{{date}}</time>
+                            <p>
+                                {{#each tags}}
+                                    <span class="tag">{{this}}</span>
+                                {{/each}}
+                            </p>
+                        {{/each}}
+                </article>
                 <a href="/new"> New entry </a>
             </div>
         </div>

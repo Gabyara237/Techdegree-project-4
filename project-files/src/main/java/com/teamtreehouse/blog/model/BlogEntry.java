@@ -1,10 +1,8 @@
 package com.teamtreehouse.blog.model;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 import com.github.slugify.Slugify;
 
 public class BlogEntry {
@@ -15,13 +13,16 @@ public class BlogEntry {
    // private String author;
     private List<Comment> comments;
     private String slug;
+    private List<String> tags;
 
 
-    public BlogEntry( String title, String content, String date) {
+    public BlogEntry( String title, String content, String date, List<String> tags) {
         this.date = date;
         this.content = content;
         this.title = title;
         this.comments = new ArrayList<>();
+        this.tags = tags != null ? new ArrayList<>(tags) : new ArrayList<>();
+
        // this.author = author;
         try {
             Slugify slugify = new Slugify();
@@ -29,6 +30,7 @@ public class BlogEntry {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     // ######################## GETTERS #######################
@@ -53,7 +55,15 @@ public class BlogEntry {
         return date;
     }
 
-    // ######################## SETTERS #######################
+    public List<String> getTags() {
+        return tags;
+    }
+
+// ######################## SETTERS #######################
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 
     public void setTitle(String title) {
         this.title = title;

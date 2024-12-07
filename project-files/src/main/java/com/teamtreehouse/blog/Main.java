@@ -62,7 +62,6 @@ public class Main {
         },new HandlebarsTemplateEngine());
 
         post("/new", (req,res) ->{
-            System.out.println("Nueva entrada agregada");
             dao.addEntry(createUpdateEntry(req));
             res.redirect("/");
             return null;
@@ -88,6 +87,19 @@ public class Main {
             return null;
         });
 
+        post("/delete/:slug",(req,res)->{
+            if(req.attribute("password") ==null || !req.attribute("password").equals("admin")){
+                String slug = req.params("slug");
+                res.redirect("/password?slug="+ slug);
+                halt();
+            }
+            String slug = req.params("slug");
+            BlogEntry blogEntry = dao.findEntryBySlug(slug);
+            dao.deleteEntry(blogEntry);
+            res.redirect("/");
+            return  null;
+
+        });
         get("/password",(req,res) ->{
             Map<String,String> model = new HashMap<>();
             String slug = req.queryParams("slug");
@@ -119,7 +131,13 @@ public class Main {
         String title = req.queryParams("title");
         String content = req.queryParams("entry");
         String dateFormatted = dateFormat.format(new Date());
-        return new BlogEntry(title,content,dateFormatted);
+        String tagsString =req.queryParams("tags");
+
+        List<String> tags = new ArrayList<>();
+        if(tagsString !=null && !tagsString.isEmpty()){
+            tags= Arrays.asList(tagsString.split("\\s*,\\s*"));
+        }
+        return new BlogEntry(title,content,dateFormatted,tags);
     }
 
 }

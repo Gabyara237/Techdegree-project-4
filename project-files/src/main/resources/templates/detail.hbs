@@ -5,9 +5,17 @@
                     <article>
                         <h1>{{entry.title}}</h1>
                         <time datetime="2016-01-31 1:00">{{entry.date}}</time>
+                        <p>
+                            {{#each entry.tags}}
+                                <span class="tag">{{this}}</span>
+                            {{/each}}
+                        </p>
                         <div class="entry">
                             <p>{{entry.content}}</p>
                             <p><a class="link" href="/edit/{{entry.slug}}">Edit Entry</a></p>
+                            <form action="/delete/{{entry.slug}}" method="POST" >
+                                <button type="submit" class="delete-button">Delete Entry</button>
+                            </form>
                         </div>
                     </article>
                 </div>
