@@ -10,7 +10,6 @@ public class BlogEntry {
     private String title;
     private String content;
     private String date;
-   // private String author;
     private List<Comment> comments;
     private String slug;
     private List<String> tags;
@@ -23,7 +22,6 @@ public class BlogEntry {
         this.comments = new ArrayList<>();
         this.tags = tags != null ? new ArrayList<>(tags) : new ArrayList<>();
 
-       // this.author = author;
         try {
             Slugify slugify = new Slugify();
             slug = slugify.slugify(title);

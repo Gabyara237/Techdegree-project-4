@@ -1,7 +1,5 @@
 package com.teamtreehouse.blog.model;
 
-import java.util.Date;
-
 public class Comment {
     private String author;
     private String content;
@@ -26,8 +24,6 @@ public class Comment {
     public String getDate() {
         return date;
     }
-
-
 
 
 }

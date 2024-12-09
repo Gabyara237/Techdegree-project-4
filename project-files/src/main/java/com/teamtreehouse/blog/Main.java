@@ -14,13 +14,15 @@ import java.util.*;
 import static spark.Spark.*;
 
 public class Main {
+    //Standard format for displaying dates in entries and comments.
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a");
     private static final String FLASH_MESSAGE_KEY = "flash_message";
 
     public static void main(String[] args) {
         staticFileLocation("/public");
+        // DAO instance created to manage blog entries
         BlogDao dao = new SimpleBlogDAO();
-
+        // Checks if the password cookie exists and assigns it as attribute
         before((req,res)->{
             if(req.cookie("password")!=null){
                 req.attribute("password",req.cookie("password"));
@@ -28,6 +30,7 @@ public class Main {
             }
         });
 
+        // Ensure that the user is authenticated when trying to enter the path `/new`.
         before("/new", (req,res) ->{
             if (req.attribute("password") == null || !req.attribute("password").equals("admin")){
                 setFlashMessage(req,"Whoops, please enter your administrator password!");
@@ -36,6 +39,7 @@ public class Main {
             }
         });
 
+        // Main Route showing all blog entries.
         get("/", (req,res) -> {
             Map<String,Object> model = new HashMap<>();
             model.put("entries",dao.findAllEntries());
@@ -46,6 +50,7 @@ public class Main {
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
+        // Route to display a specific entry according to its slug.
         get ("/detail/:slug",(req, res) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("entry",dao.findEntryBySlug(req.params("slug")));
@@ -56,6 +61,7 @@ public class Main {
             return new ModelAndView(model,"detail.hbs");
         }, new HandlebarsTemplateEngine());
 
+        // Route to add a comment to a specific entry.
         post("/detail/:slug",(req,res) ->{
 
             String slug = req.params("slug");
@@ -70,6 +76,7 @@ public class Main {
             return null;
         });
 
+        // Route that displays the form to create a new entry.
         get("/new",(req,res) ->{
             if(req.attribute("password") == null || !req.attribute("password").equals("admin")){
                 res.redirect("/password?redirect=new");
@@ -80,6 +87,7 @@ public class Main {
             return new ModelAndView(model,"new.hbs");
         },new HandlebarsTemplateEngine());
 
+        // Route to process the creation of a new entry.
         post("/new", (req,res) ->{
             dao.addEntry(createUpdateEntry(req));
             setFlashMessage(req,"Post entry successfully created!");
@@ -87,6 +95,7 @@ public class Main {
             return null;
         });
 
+        // Route to show the edit form of an existing entry.
         get("/edit/:slug",(req,res) -> {
             if(req.attribute("password") == null || !req.attribute("password").equals("admin")){
                 String slug = req.params("slug");
@@ -98,6 +107,7 @@ public class Main {
             return new ModelAndView(model,"edit.hbs");
         },new HandlebarsTemplateEngine());
 
+        // Route to process the editing of an existing entry.
         post("/edit/:slug",(req,res)-> {
             String slug = req.params("slug");
             BlogEntry blogEntry = dao.findEntryBySlug(slug);
@@ -108,6 +118,7 @@ public class Main {
             return null;
         });
 
+        // Route to delete an entry.
         post("/delete/:slug",(req,res)->{
             if(req.attribute("password") ==null || !req.attribute("password").equals("admin")){
                 String slug = req.params("slug");
@@ -122,6 +133,8 @@ public class Main {
             return  null;
 
         });
+
+        // Route to display the password authentication form.
         get("/password",(req,res) ->{
             Map<String,String> model = new HashMap<>();
             String slug = req.queryParams("slug");
@@ -139,6 +152,7 @@ public class Main {
             return new ModelAndView(model,"password.hbs");
         },new HandlebarsTemplateEngine());
 
+        // Route to process the authentication form
         post("/password", (req,res) ->{
             String password = req.queryParams("password");
             String slug = req.queryParams("slug");
@@ -158,6 +172,7 @@ public class Main {
         });
     }
 
+    // Method to create or update an entry from the form data.
     public static BlogEntry createUpdateEntry(spark.Request req){
         String title = req.queryParams("title");
         String content = req.queryParams("entry");
@@ -171,10 +186,12 @@ public class Main {
         return new BlogEntry(title,content,dateFormatted,tags);
     }
 
+    // Set a flash message in the session
     private static void setFlashMessage(Request req, String message) {
         req.session().attribute(FLASH_MESSAGE_KEY, message);
     }
 
+    // Gets a flash message without deleting it from the session.
     private static String getFlashMessage(Request req){
         if (req.session(false) == null){
             return null;
@@ -185,6 +202,7 @@ public class Main {
         return (String) req.session().attribute(FLASH_MESSAGE_KEY);
     }
 
+    // Captures and removes a flash message from the session.
     private static String captureFlashMessage(Request req){
         String message = getFlashMessage(req);
         if (message != null){
