@@ -1,6 +1,9 @@
 {{#partial "content"}}
         <section>
             <div class="container">
+                {{#if flashMessage}}
+                    <div class="flash-message">{{flashMessage}}</div>
+                {{/if}}
                 <div class="entry-list single">
                     <article>
                         <h1>{{entry.title}}</h1>
@@ -34,9 +37,9 @@
                     <div class="new-comment">
                         <form action="/detail/{{entry.slug}}" method="POST">
                               <label for="name">Name</label>
-                              <input type="text" name="name" id="name"><br>
+                              <input type="text" name="name" id="name" required><br>
                               <label for="comment">Comment</label>
-                              <textarea rows="5" name="comment" id="comment"></textarea>
+                              <textarea rows="5" name="comment" id="comment" required></textarea>
                               <input type="submit" value="Post Comment" class="button">
                         </form>
                     </div>

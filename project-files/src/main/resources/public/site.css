@@ -13,7 +13,7 @@ body {
 .container {
 	margin: 0 auto;
 	padding: 0 25px;
-	background: #FFF;
+	background: #E8EAF6;
 }
 header .site-header {
 	border-bottom: 1px solid #d1d1d1;
@@ -37,14 +37,15 @@ header .new-entry {
 	margin: 25px 0 0 0;
 }
 footer {
-	background: #444;
+	background: #7986CB;
 	height: 30px;
 	text-align: center;
 	padding: 35px 0;
 	color: #999;
+
 }
 footer a {
-	color: #999;
+	color: #07080c;
 	text-decoration: none;
 	border-bottom: 2px solid #666;
 	padding-bottom: 1px;
@@ -59,8 +60,8 @@ footer a {
 .button {
 	padding: 8px 12px 7px 12px;
 	text-transform: uppercase;
-	background: #000;
-	border: 3px solid #000;
+	background: #384997;
+	border: 3px solid #384997;
 	border-radius: 4px;
 	text-decoration: none;
 	color: #FFF;
@@ -104,6 +105,7 @@ h2 {
 }
 h3 {
 	font-size: 28px;
+	color: #203180;
 }
 p {
 	font-size: 15px;
@@ -262,9 +264,68 @@ input[type=submit] {
 	margin-right: 5px;
 }
 
+.delete-button {
+    background-color: #FF4D4D;
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.delete-button:hover {
+    background-color: #E60000;
+}
+
+.tag {
+    background-color: #FFECB3;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 3px;
+    font-size: 14px;
+    display: inline-block;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.tag:hover {
+    background-color: #FFD54F;
+    color: #000;
+}
+
+.button-link {
+    display: table;
+    padding: 8px 12px 7px 12px;
+    text-transform: uppercase;
+    background: #384997;
+    border: 3px solid #384997;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 13px;
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0 auto;
+}
+
+.button-link:hover{
+    background-color: #2b3a86;
+}
+
+.flash-message{
+    background-color: #384997;
+    border-radius: 5px;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    padding: 10px 20px;
+}
 
 
 
+}
 
 
 

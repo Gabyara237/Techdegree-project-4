@@ -2,8 +2,15 @@
 
     <section>
         <div class="container">
+            {{#if flashMessage}}
+                <div class="flash-message">{{flashMessage}}</div>
+            {{/if}}
             <div class="entry-list">
                 <article>
+                    {{#if entries}}
+                        <h3>Enjoy our available blog entries!</h3>
+                        <br>
+                        <br>
 
                         {{#each entries}}
                             <a href="/detail/{{slug}}"><h2>{{title}}</h2></a><time datetime="2024-10-01 1:00">{{date}}</time>
@@ -13,8 +20,12 @@
                                 {{/each}}
                             </p>
                         {{/each}}
+                    {{else}}
+                        <h3>No entries available.<br>It's time to create a new one! </h3>
+
+                    {{/if}}
                 </article>
-                <a href="/new"> New entry </a>
+                <a class= "button-link" href="/new"> New entry </a>
             </div>
         </div>
     </section>
