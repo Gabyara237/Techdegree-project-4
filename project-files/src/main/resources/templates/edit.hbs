@@ -8,6 +8,8 @@
                         <input type="text" name="title" id="title" value="{{entry.title}}" required><br>
                         <label for="entry">Entry</label>
                         <textarea rows="5" name="entry" id="entry" required>{{entry.content}}</textarea>
+                        <label for="tags"> Tags - Enter the tags separated by commas </label>
+                        <input type="text" name="tags" id="tags" value="{{#each entry.tags}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}"><br>
                         <input type="submit" value="Save Entry" class="button">
                         <a href="/" class="button button-secondary">Cancel</a>
                     </form>

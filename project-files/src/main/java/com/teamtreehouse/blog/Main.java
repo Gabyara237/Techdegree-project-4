@@ -4,12 +4,15 @@ import com.teamtreehouse.blog.dao.BlogDao;
 import com.teamtreehouse.blog.dao.SimpleBlogDAO;
 import com.teamtreehouse.blog.model.BlogEntry;
 import com.teamtreehouse.blog.model.Comment;
+import com.thedeanda.lorem.Lorem;
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import com.thedeanda.lorem.LoremIpsum;
 
 import static spark.Spark.*;
 
@@ -18,10 +21,12 @@ public class Main {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a");
     private static final String FLASH_MESSAGE_KEY = "flash_message";
 
+    private static  BlogDao dao = new SimpleBlogDAO();
+
     public static void main(String[] args) {
         staticFileLocation("/public");
         // DAO instance created to manage blog entries
-        BlogDao dao = new SimpleBlogDAO();
+        createThreeEntries();
         // Checks if the password cookie exists and assigns it as attribute
         before((req,res)->{
             if(req.cookie("password")!=null){
@@ -113,6 +118,12 @@ public class Main {
             BlogEntry blogEntry = dao.findEntryBySlug(slug);
             blogEntry.setTitle(req.queryParams("title"));
             blogEntry.setContent(req.queryParams("entry"));
+            String tagsString = req.queryParams("tags");
+            List<String> tags = new ArrayList<>();
+            if(tagsString !=null && !tagsString.isEmpty()){
+                tags= Arrays.asList(tagsString.split("\\s*,\\s*"));
+            }
+            blogEntry.setTags(tags);
             setFlashMessage(req,"Post entry successfully edited!");
             res.redirect("/detail/"+slug);
             return null;
@@ -210,4 +221,34 @@ public class Main {
         }
         return message;
     }
+
+    private static void createThreeEntries(){
+        List<String> listTitle = new ArrayList<>();
+        List<BlogEntry> listBlogEntries = new ArrayList<>();
+        Lorem lorem = LoremIpsum.getInstance();
+
+        listTitle.add("Why choose java as a programming language?");
+        listTitle.add("10 tips to improve your Java code");
+        listTitle.add("Top Java Libraries and Frameworks for 2025");
+
+        for(int i=0; i<3; i++){
+            String title = listTitle.get(i);
+            String content = lorem.getParagraphs(2, 4);
+            String dateFormatted = dateFormat.format(new Date());
+            String tagsString ="Java, Programming,code";
+            List<String> tags = new ArrayList<>();
+
+            tags= Arrays.asList(tagsString.split("\\s*,\\s*"));
+
+            BlogEntry blogEntry= new BlogEntry(title,content,dateFormatted,tags);
+            Comment comment = new Comment("Gaby", lorem.getParagraphs(1,2),dateFormatted );
+            blogEntry.addComment(comment);
+            dao.addEntry(blogEntry);
+
+        }
+
+
+    }
+
+
 }
